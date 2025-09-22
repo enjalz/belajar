@@ -143,4 +143,58 @@ class _YogaMeditationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInset
+      margin: const EdgeInsets.only(bottom: 15), // jarak antar item
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          // bayangan biar keliatan kayak kartu
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            spreadRadius: 1,
+            blurRadius: 5,
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          // kotak kecil berisi icon
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF9A825).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(icon, color: const Color(0xFFF9A825)),
+          ),
+          const SizedBox(width: 15),
+          // teks judul dan durasi
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  duration,
+                  style: TextStyle(
+                    color: Colors.grey.shade600,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // icon panah di ujung kanan
+          const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+        ],
+      ),
+    );
+  }
+}
