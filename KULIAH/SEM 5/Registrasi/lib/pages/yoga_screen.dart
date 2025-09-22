@@ -5,42 +5,44 @@ class YogaScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Progres yoga dummy
-    const double yogaProgress = 0.8; // 80%
+    // ini cuma data dummy buat nunjukin progres yoga (80%)
+    const double yogaProgress = 0.8;
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        // judul app bar di atas layar
         title: const Text('Yoga & Meditasi',
             style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold)),
-        backgroundColor: const Color(0xFFFCD4D4),
-        centerTitle: true,
+        backgroundColor: const Color(0xFFFCD4D4), // warna background app bar
+        centerTitle: true, // biar judulnya di tengah
       ),
       body: SingleChildScrollView(
+        // biar body bisa discroll kalau kontennya panjang
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildProgressCard(yogaProgress),
+            _buildProgressCard(yogaProgress), // nunjukin kartu progres yoga
+            const SizedBox(height: 30), // jarak biar ga dempet
+            _buildSectionTitle('Rekomendasi Yoga'), // judul bagian yoga
+            _buildYogaList(), // list yoga yg direkomendasi
             const SizedBox(height: 30),
-            _buildSectionTitle('Rekomendasi Yoga'),
-            _buildYogaList(),
-            const SizedBox(height: 30),
-            _buildSectionTitle('Sesi Meditasi'),
-            _buildMeditationList(),
+            _buildSectionTitle('Sesi Meditasi'), // judul bagian meditasi
+            _buildMeditationList(), // list meditasi yg direkomendasi
           ],
         ),
       ),
     );
   }
 
-  /// Widget untuk menampilkan kartu progres
+  // bikin widget buat nampilin kartu progres yoga
   Widget _buildProgressCard(double progress) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFCC80).withOpacity(0.2),
-        borderRadius: BorderRadius.circular(20),
+        color: const Color(0xFFFFCC80).withOpacity(0.2), // warna background soft
+        borderRadius: BorderRadius.circular(20), // biar ujungnya rounded
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,15 +56,17 @@ class YogaScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
+          // teks keterangan berapa % yang sudah selesai
           Text(
             'Kamu sudah menyelesaikan ${(progress * 100).toInt()}% dari targetmu hari ini.',
             style: TextStyle(color: Colors.grey.shade600),
           ),
           const SizedBox(height: 15),
+          // indikator progress bar
           LinearProgressIndicator(
-            value: progress,
+            value: progress, // nilai progress (0.8 = 80%)
             backgroundColor: Colors.grey.shade300,
-            color: const Color(0xFFF9A825),
+            color: const Color(0xFFF9A825), // warna bar-nya
             borderRadius: BorderRadius.circular(10),
             minHeight: 12,
           ),
@@ -71,7 +75,7 @@ class YogaScreen extends StatelessWidget {
     );
   }
 
-  /// Widget untuk judul bagian
+  // bikin judul bagian biar konsisten stylenya
   Widget _buildSectionTitle(String title) {
     return Text(
       title,
@@ -83,11 +87,11 @@ class YogaScreen extends StatelessWidget {
     );
   }
 
-  /// Widget untuk membuat daftar yoga
+  // bikin daftar yoga
   Widget _buildYogaList() {
     return ListView(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true, // biar muat di dalam scroll utama
+      physics: const NeverScrollableScrollPhysics(), // ga perlu scroll sendiri
       children: const [
         _YogaMeditationItem(
           title: 'Yoga untuk Pemula',
@@ -103,7 +107,7 @@ class YogaScreen extends StatelessWidget {
     );
   }
 
-  /// Widget untuk membuat daftar meditasi
+  // bikin daftar meditasi
   Widget _buildMeditationList() {
     return ListView(
       shrinkWrap: true,
@@ -124,11 +128,11 @@ class YogaScreen extends StatelessWidget {
   }
 }
 
-/// Widget yang dapat digunakan kembali untuk item yoga/meditasi
+// widget reusable untuk yoga dan meditasi biar ga perlu bikin 2 kali
 class _YogaMeditationItem extends StatelessWidget {
-  final String title;
-  final String duration;
-  final IconData icon;
+  final String title; // judul yoga/meditasi
+  final String duration; // durasi latihannya
+  final IconData icon; // icon yg ditampilkan
 
   const _YogaMeditationItem({
     required this.title,
@@ -139,54 +143,4 @@ class _YogaMeditationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 15),
-      padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            spreadRadius: 1,
-            blurRadius: 5,
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: const Color(0xFFF9A825).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(icon, color: const Color(0xFFF9A825)),
-          ),
-          const SizedBox(width: 15),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                Text(
-                  duration,
-                  style: TextStyle(
-                    color: Colors.grey.shade600,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
-        ],
-      ),
-    );
-  }
-}
+      margin: const EdgeInset
