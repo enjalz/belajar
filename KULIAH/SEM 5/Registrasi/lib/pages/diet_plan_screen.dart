@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-// Class untuk merepresentasikan pilihan diet
+// class buat nyimpen data opsi diet
 class DietOption {
-  final String title;
-  final String description;
-  final IconData icon;
+  final String title; // judul diet
+  final String description; // deskripsi singkat diet
+  final IconData icon; // icon yang dipake buat diet ini
 
   const DietOption({
     required this.title,
@@ -18,26 +18,26 @@ class DietPlanScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // List data dummy untuk opsi diet
+    // bikin list dummy untuk opsi diet
     const List<DietOption> dietOptions = [
       DietOption(
-        title: 'Diet Mediterania',
-        description: 'Fokus pada buah-buahan, sayuran, biji-bijian, dan lemak sehat.',
+        title: 'diet mediterania',
+        description: 'fokus pada buah-buahan, sayuran, biji-bijian, dan lemak sehat.',
         icon: Icons.local_dining,
       ),
       DietOption(
-        title: 'Diet Vegan',
-        description: 'Membatasi semua produk hewani, termasuk daging, telur, dan susu.',
+        title: 'diet vegan',
+        description: 'membatasi semua produk hewani, termasuk daging, telur, dan susu.',
         icon: Icons.spa,
       ),
       DietOption(
-        title: 'Diet Ketogenik (Keto)',
-        description: 'Rendah karbohidrat, tinggi lemak untuk memaksa tubuh membakar lemak.',
+        title: 'diet ketogenik (keto)',
+        description: 'rendah karbohidrat, tinggi lemak untuk memaksa tubuh membakar lemak.',
         icon: Icons.fastfood,
       ),
       DietOption(
-        title: 'Diet DASH',
-        description: 'Dirancang untuk mengendalikan tekanan darah tinggi.',
+        title: 'diet dash',
+        description: 'dirancang untuk mengendalikan tekanan darah tinggi.',
         icon: Icons.monitor_heart,
       ),
     ];
@@ -45,18 +45,21 @@ class DietPlanScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Rencana Diet',
-            style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold)),
+        title: const Text(
+          'rencana diet',
+          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+        ),
         backgroundColor: const Color(0xFFFCD4D4),
-        centerTitle: true,
+        centerTitle: true, // bikin judul di tengah
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // judul halaman
             const Text(
-              'Pilih Rencana Dietmu',
+              'pilih rencana dietmu',
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
@@ -64,21 +67,23 @@ class DietPlanScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
+            // subjudul kecil
             const Text(
-              'Temukan rencana yang paling sesuai dengan gaya hidup dan tujuanmu.',
+              'temukan rencana yang paling sesuai dengan gaya hidup dan tujuanmu.',
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.black54,
               ),
             ),
             const SizedBox(height: 30),
+            // bikin list opsi diet
             ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true, // biar listnya ikut tinggi konten
+              physics: const NeverScrollableScrollPhysics(), // biar scroll ikut parent
               itemCount: dietOptions.length,
               itemBuilder: (context, index) {
                 final option = dietOptions[index];
-                return _buildDietCard(option);
+                return _buildDietCard(option); // panggil widget kartu diet
               },
             ),
           ],
@@ -87,10 +92,10 @@ class DietPlanScreen extends StatelessWidget {
     );
   }
 
-  /// Widget untuk membangun kartu pilihan diet
+  // widget untuk bikin 1 kartu pilihan diet
   Widget _buildDietCard(DietOption option) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20), // jarak antar kartu
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -99,12 +104,13 @@ class DietPlanScreen extends StatelessWidget {
             color: Colors.black.withOpacity(0.05),
             spreadRadius: 2,
             blurRadius: 10,
-            offset: const Offset(0, 5),
+            offset: const Offset(0, 5), // bikin efek bayangan
           ),
         ],
       ),
       child: ListTile(
         contentPadding: const EdgeInsets.all(20),
+        // icon di sebelah kiri
         leading: Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
@@ -113,6 +119,7 @@ class DietPlanScreen extends StatelessWidget {
           ),
           child: Icon(option.icon, color: const Color(0xFFF9A825), size: 30),
         ),
+        // judul diet
         title: Text(
           option.title,
           style: const TextStyle(
@@ -121,6 +128,7 @@ class DietPlanScreen extends StatelessWidget {
             color: Color(0xFF333333),
           ),
         ),
+        // deskripsi diet
         subtitle: Padding(
           padding: const EdgeInsets.only(top: 5.0),
           child: Text(
