@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-// Pastikan path dan file ini berisi definisi dari kelas RegistrationData.
+// Import file register_page biar bisa ambil data registrasi (RegistrationData)
 import 'register_page.dart';
 
 // =======================================================
-// CLASS 1: DIALOG POP-UP (Menggantikan HomePages lama)
+// CLASS 1: DIALOG POP-UP (Muncul setelah registrasi sukses)
 // =======================================================
 class RegistrationSuccessDialog extends StatelessWidget {
 
-  final RegistrationData data;
+  final RegistrationData data; // Data yang dikirim dari halaman registrasi
   const RegistrationSuccessDialog({super.key, required this.data});
 
-  // Metode statis untuk memanggil dialog dengan mudah
+  // Fungsi static biar gampang manggil dialog ini dari mana aja
   static Future<void> show(BuildContext context, RegistrationData data) {
     return showDialog(
       context: context,
-      barrierDismissible: false, // Mencegah dialog ditutup dengan ketukan di luar
+      barrierDismissible: false, // Dialog ga bisa ditutup klik luar
       builder: (BuildContext context) {
         return RegistrationSuccessDialog(data: data);
       },
@@ -24,10 +24,11 @@ class RegistrationSuccessDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return AlertDialog(
-      title: const Text('Registrasi Berhasil!'),
+      title: const Text('Registrasi Berhasil!'), // Judul popup
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
+            // Tampilkan data user yang baru daftar
             Text('Nama: ${data.name}'),
             const SizedBox(height: 4),
             Text('Email: ${data.email}'),
@@ -44,14 +45,13 @@ class RegistrationSuccessDialog extends StatelessWidget {
         TextButton(
           child: const Text('OK'),
           onPressed: () {
-            // 1. Tutup dialog pop-up
+            // Tutup dialog
             Navigator.of(context).pop();
 
-            // 2. Navigasi ke HomePage yang ASLI (HomeScreen)
-            // Menggunakan pushAndRemoveUntil untuk menghapus rute registrasi.
+            // Pindah ke HomeScreen dan hapus halaman sebelumnya
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => const HomeScreen()),
-                  (Route<dynamic> route) => false,
+              (Route<dynamic> route) => false, // hapus semua route lama
             );
           },
         ),
@@ -61,7 +61,7 @@ class RegistrationSuccessDialog extends StatelessWidget {
 }
 
 // =======================================================
-// CLASS 2: HOME SCREEN (HomePages yang asli dengan UI Health App)
+// CLASS 2: HOME SCREEN (Halaman utama setelah registrasi)
 // =======================================================
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -72,23 +72,23 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          // Gambar latar belakang (perlu dipastikan aset 'images/pink.png' tersedia)
+          // Bagian background atas
           Align(
             alignment: Alignment.topCenter,
             child: Image.asset(
-              'images/pink.png',
+              'images/pink.png', // Pastikan file ini ada di folder assets
               height: MediaQuery.of(context).size.height * 0.5,
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.cover,
               alignment: Alignment.topCenter,
               errorBuilder: (context, error, stackTrace) => Container(
                 height: MediaQuery.of(context).size.height * 0.5,
-                color: Colors.pink.shade100, // Warna fallback
+                color: Colors.pink.shade100, // fallback kalo gambar ga ada
               ),
             ),
           ),
 
-          // Konten aplikasi
+          // Konten utama
           SafeArea(
             child: Column(
               children: [
@@ -99,17 +99,17 @@ class HomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 20),
-                        _buildHeader(),
+                        _buildHeader(), // Bagian header (sapaan)
                         const SizedBox(height: 30),
-                        _buildSearchBar(),
+                        _buildSearchBar(), // Search bar
                         const SizedBox(height: 30),
-                        _buildGridMenu(context),
+                        _buildGridMenu(context), // Grid menu fitur
                         const SizedBox(height: 20),
                       ],
                     ),
                   ),
                 ),
-                _buildBottomNavBar(),
+                _buildBottomNavBar(), // Bottom navigation bar
               ],
             ),
           ),
@@ -118,12 +118,12 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  /// Widget untuk Header: Teks "Good Morning" dan ikon menu
+  /// Bagian Header: Ada menu icon + sapaan
   Widget _buildHeader() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Ikon menu
+        // Ikon menu di kanan atas
         Align(
           alignment: Alignment.centerRight,
           child: Container(
@@ -138,10 +138,8 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ),
-
         const SizedBox(height: 16),
-
-        // Teks sapaan
+        // Sapaan user
         const Text(
           'Good Morning\nDunjali',
           style: TextStyle(
@@ -154,11 +152,11 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  /// Widget untuk Search Bar
+  /// Search Bar di bawah header
   Widget _buildSearchBar() {
     return TextField(
       decoration: InputDecoration(
-        hintText: 'Search',
+        hintText: 'Search', // placeholder
         hintStyle: TextStyle(color: Colors.grey.shade400),
         prefixIcon: Icon(Icons.search, color: Colors.grey.shade400),
         filled: true,
@@ -172,30 +170,34 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  /// Widget untuk Grid Menu: Menampilkan empat kartu fitur
+  /// Grid Menu untuk fitur utama aplikasi
   Widget _buildGridMenu(BuildContext context) {
     return GridView.count(
-      crossAxisCount: 2,
-      shrinkWrap: true,
+      crossAxisCount: 2, // 2 kolom
+      shrinkWrap: true, // biar grid bisa scroll bareng column
       physics: const NeverScrollableScrollPhysics(),
       crossAxisSpacing: 16,
       mainAxisSpacing: 16,
       children: [
+        // Card fitur diet plan
         FeatureCard(
           title: 'Diet Plan',
           imagePath: 'images/diet.png',
           onTap: () => Navigator.of(context).pushNamed('/diet'),
         ),
+        // Card fitur exercises
         FeatureCard(
           title: 'Exercises',
           imagePath: 'images/exercise.png',
           onTap: () => Navigator.of(context).pushNamed('/exercises'),
         ),
+        // Card fitur medical tips
         FeatureCard(
           title: 'Medical Tips',
           imagePath: 'images/medical.png',
           onTap: () => Navigator.of(context).pushNamed('/medical'),
         ),
+        // Card fitur yoga
         FeatureCard(
           title: 'Yoga',
           imagePath: 'images/yoga.png',
@@ -205,7 +207,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  /// Widget untuk Bottom Navigation Bar kustom
+  /// Bottom navigation bar custom (tiga tombol)
   Widget _buildBottomNavBar() {
     return Container(
       padding: const EdgeInsets.fromLTRB(10, 15, 10, 20),
@@ -246,10 +248,10 @@ class HomeScreen extends StatelessWidget {
 }
 
 // =======================================================
-// WIDGET BANTUAN
+// WIDGET BANTUAN (Reusable components)
 // =======================================================
 
-/// Widget yang dapat digunakan kembali untuk setiap kartu di grid
+/// Kartu menu untuk setiap fitur
 class FeatureCard extends StatelessWidget {
   final String title;
   final String imagePath;
@@ -265,7 +267,7 @@ class FeatureCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: onTap, // Biar kartu bisa diklik
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -288,7 +290,7 @@ class FeatureCard extends StatelessWidget {
                   imagePath,
                   fit: BoxFit.contain,
                   errorBuilder: (context, error, stackTrace) =>
-                  const Icon(Icons.image_not_supported, size: 50, color: Colors.grey),
+                    const Icon(Icons.image_not_supported, size: 50, color: Colors.grey),
                 ),
               ),
             ),
@@ -309,11 +311,11 @@ class FeatureCard extends StatelessWidget {
   }
 }
 
-/// Widget yang dapat digunakan kembali untuk setiap item di bottom navigation bar
+// Item untuk bottom navigation bar
 class BottomNavItem extends StatelessWidget {
   final IconData icon;
   final String label;
-  final bool isActive;
+  final bool isActive; // Biar tau icon yang lagi aktif
 
   const BottomNavItem({
     super.key,
@@ -324,8 +326,8 @@ class BottomNavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color activeColor = const Color(0xFFF9A825);
-    final Color inactiveColor = Colors.grey.shade500;
+    final Color activeColor = const Color(0xFFF9A825); // warna item aktif
+    final Color inactiveColor = Colors.grey.shade500; // warna item pasif
 
     return Column(
       mainAxisSize: MainAxisSize.min,
