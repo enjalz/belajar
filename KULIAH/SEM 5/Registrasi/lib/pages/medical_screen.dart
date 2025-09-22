@@ -9,71 +9,75 @@ class MedicalScreen extends StatefulWidget {
 }
 
 class _MedicalScreenState extends State<MedicalScreen> {
+  // Controller buat ambil input dari user (tinggi & berat)
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
+
+  // Variabel buat nampilin hasil BMI
   String _resultText = '';
   Color _resultColor = Colors.black;
 
   @override
   void dispose() {
+    // Bersihin controller biar gak ada memory leak
     _heightController.dispose();
     _weightController.dispose();
     super.dispose();
   }
 
   void _calculateBMI() {
-    // Mengambil nilai dari controller, konversi ke double
+    // Ambil input tinggi & berat, terus ubah jadi angka (double)
     final double? height = double.tryParse(_heightController.text);
     final double? weight = double.tryParse(_weightController.text);
 
-    // Validasi input
+    // Cek kalo input gak valid (kosong atau <= 0)
     if (height == null || height <= 0 || weight == null || weight <= 0) {
       setState(() {
-        _resultText = 'Masukkan tinggi dan berat badan yang valid.';
-        _resultColor = Colors.red;
+        _resultText = 'Masukkan tinggi dan berat badan yang valid.'; // Pesan error
+        _resultColor = Colors.red; // Teksnya jadi merah
       });
       return;
     }
 
-    // Konversi tinggi dari cm ke meter
+    // Ubah tinggi dari cm ke meter
     final double heightInMeters = height / 100;
 
-    // Menghitung BMI
+    // Hitung BMI dengan rumus = berat / (tinggi^2)
     final double bmi = weight / pow(heightInMeters, 2);
 
-    // Menentukan status kesehatan berdasarkan BMI
+    // Tentuin status berdasarkan hasil BMI
     String status;
     if (bmi < 18.5) {
-      status = 'Kekurangan berat badan.';
-      _resultColor = const Color(0xFFF9A825);
+      status = 'Kekurangan berat badan.'; // Kurus
+      _resultColor = const Color(0xFFF9A825); // Kuning
     } else if (bmi >= 18.5 && bmi < 24.9) {
-      status = 'Berat badan normal (sehat).';
+      status = 'Berat badan normal (sehat).'; // Ideal
       _resultColor = Colors.green;
     } else if (bmi >= 25 && bmi < 29.9) {
-      status = 'Kelebihan berat badan.';
-      _resultColor = const Color(0xFFF9A825);
+      status = 'Kelebihan berat badan.'; // Overweight
+      _resultColor = const Color(0xFFF9A825); // Kuning lagi
     } else {
-      status = 'Obesitas.';
+      status = 'Obesitas.'; // Berat banget
       _resultColor = Colors.red;
     }
 
-    // Menentukan rekomendasi
+    // Kasih rekomendasi sesuai kategori BMI
     String recommendation;
     if (bmi < 25) {
       recommendation =
-      'Pertahankan gaya hidup sehatmu dengan pola makan seimbang dan rutin berolahraga.';
+          'Pertahankan gaya hidup sehatmu dengan pola makan seimbang dan rutin berolahraga.';
     } else if (bmi >= 25 && bmi < 30) {
       recommendation =
-      'Disarankan untuk mulai berolahraga secara teratur dan perhatikan asupan makananmu.';
+          'Disarankan untuk mulai berolahraga secara teratur dan perhatikan asupan makananmu.';
     } else {
       recommendation =
-      'Kondisi ini membutuhkan perhatian lebih. Sangat disarankan untuk berkonsultasi dengan dokter untuk mendapatkan rencana kesehatan yang tepat.';
+          'Kondisi ini membutuhkan perhatian lebih. Sangat disarankan untuk berkonsultasi dengan dokter untuk mendapatkan rencana kesehatan yang tepat.';
     }
 
-    // Update state untuk menampilkan hasil
+    // Update state supaya UI-nya berubah sesuai hasil
     setState(() {
       _resultText =
-      'BMI-mu adalah ${bmi.toStringAsFixed(2)}. Ini menunjukkan kamu berada dalam kategori "$status"\n\n$recommendation';
+          'BMI-mu adalah ${bmi.toStringAsFixed(2)}. Ini menunjukkan kamu berada dalam kategori "$status"\n\n$recommendation';
     });
   }
 
@@ -82,16 +86,19 @@ class _MedicalScreenState extends State<MedicalScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Cek Kesehatan',
-            style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold)),
-        backgroundColor: const Color(0xFFFCD4D4),
-        centerTitle: true,
+        title: const Text(
+          'Cek Kesehatan',
+          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: const Color(0xFFFCD4D4), // Warna pink muda biar soft
+        centerTitle: true, // Judul di tengah
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Judul halaman
             const Text(
               'Periksa BMI',
               style: TextStyle(
@@ -101,6 +108,7 @@ class _MedicalScreenState extends State<MedicalScreen> {
               ),
             ),
             const SizedBox(height: 10),
+            // Penjelasan singkat
             const Text(
               'Masukkan tinggi dan berat badanmu untuk melihat kondisi kesehatanmu.',
               style: TextStyle(
@@ -109,6 +117,8 @@ class _MedicalScreenState extends State<MedicalScreen> {
               ),
             ),
             const SizedBox(height: 30),
+
+            // Input Tinggi
             TextField(
               controller: _heightController,
               keyboardType: TextInputType.number,
@@ -122,6 +132,8 @@ class _MedicalScreenState extends State<MedicalScreen> {
               ),
             ),
             const SizedBox(height: 20),
+
+            // Input Berat
             TextField(
               controller: _weightController,
               keyboardType: TextInputType.number,
@@ -135,10 +147,12 @@ class _MedicalScreenState extends State<MedicalScreen> {
               ),
             ),
             const SizedBox(height: 30),
+
+            // Tombol untuk hitung BMI
             ElevatedButton(
-              onPressed: _calculateBMI,
+              onPressed: _calculateBMI, // Panggil fungsi hitung
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFF9A825),
+                backgroundColor: const Color(0xFFF9A825), // Warna tombol kuning
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
@@ -152,12 +166,14 @@ class _MedicalScreenState extends State<MedicalScreen> {
                     color: Colors.white),
               ),
             ),
+
+            // Hasil BMI (kalau ada)
             if (_resultText.isNotEmpty) ...[
               const SizedBox(height: 30),
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: _resultColor.withOpacity(0.1),
+                  color: _resultColor.withOpacity(0.1), // Background sesuai kategori
                   borderRadius: BorderRadius.circular(15),
                   border: Border.all(color: _resultColor.withOpacity(0.5)),
                 ),
