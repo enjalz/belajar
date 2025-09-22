@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
-// Import file register_page biar bisa ambil data registrasi (RegistrationData)
+// import file register_page biar bisa ambil data registrasi (registrationdata)
 import 'register_page.dart';
 
-// =======================================================
-// CLASS 1: DIALOG POP-UP (Muncul setelah registrasi sukses)
-// =======================================================
+// class pop up dialog setelah registrasi sukses
 class RegistrationSuccessDialog extends StatelessWidget {
-
-  final RegistrationData data; // Data yang dikirim dari halaman registrasi
+  final RegistrationData data; // data yang dikirim dari halaman registrasi
   const RegistrationSuccessDialog({super.key, required this.data});
 
-  // Fungsi static biar gampang manggil dialog ini dari mana aja
+  // bikin function static biar gampang panggil pop up ini dari mana aja
   static Future<void> show(BuildContext context, RegistrationData data) {
     return showDialog(
       context: context,
-      barrierDismissible: false, // Dialog ga bisa ditutup klik luar
+      barrierDismissible: false, // ga bisa tutup kalo klik di luar dialog
       builder: (BuildContext context) {
         return RegistrationSuccessDialog(data: data);
       },
@@ -22,13 +19,13 @@ class RegistrationSuccessDialog extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Registrasi Berhasil!'), // Judul popup
+      title: const Text('Registrasi Berhasil!'), // judul pop up
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
-            // Tampilkan data user yang baru daftar
+            // tampilkan data user yang baru daftar
             Text('Nama: ${data.name}'),
             const SizedBox(height: 4),
             Text('Email: ${data.email}'),
@@ -45,13 +42,13 @@ class RegistrationSuccessDialog extends StatelessWidget {
         TextButton(
           child: const Text('OK'),
           onPressed: () {
-            // Tutup dialog
+            // tutup dialog
             Navigator.of(context).pop();
 
-            // Pindah ke HomeScreen dan hapus halaman sebelumnya
+            // pindah ke homescreen, hapus semua halaman sebelumnya
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => const HomeScreen()),
-              (Route<dynamic> route) => false, // hapus semua route lama
+              (Route<dynamic> route) => false,
             );
           },
         ),
@@ -60,9 +57,7 @@ class RegistrationSuccessDialog extends StatelessWidget {
   }
 }
 
-// =======================================================
-// CLASS 2: HOME SCREEN (Halaman utama setelah registrasi)
-// =======================================================
+// halaman utama setelah registrasi
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -72,23 +67,23 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          // Bagian background atas
+          // gambar background di bagian atas
           Align(
             alignment: Alignment.topCenter,
             child: Image.asset(
-              'images/pink.png', // Pastikan file ini ada di folder assets
+              'images/pink.png',
               height: MediaQuery.of(context).size.height * 0.5,
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.cover,
               alignment: Alignment.topCenter,
               errorBuilder: (context, error, stackTrace) => Container(
                 height: MediaQuery.of(context).size.height * 0.5,
-                color: Colors.pink.shade100, // fallback kalo gambar ga ada
+                color: Colors.pink.shade100, // fallback kalo gambar ga ketemu
               ),
             ),
           ),
 
-          // Konten utama
+          // isi utama halaman
           SafeArea(
             child: Column(
               children: [
@@ -99,17 +94,17 @@ class HomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 20),
-                        _buildHeader(), // Bagian header (sapaan)
+                        _buildHeader(), // bagian header / sapaan
                         const SizedBox(height: 30),
-                        _buildSearchBar(), // Search bar
+                        _buildSearchBar(), // search bar
                         const SizedBox(height: 30),
-                        _buildGridMenu(context), // Grid menu fitur
+                        _buildGridMenu(context), // menu utama berbentuk grid
                         const SizedBox(height: 20),
                       ],
                     ),
                   ),
                 ),
-                _buildBottomNavBar(), // Bottom navigation bar
+                _buildBottomNavBar(), // bottom nav bar di bawah
               ],
             ),
           ),
@@ -118,12 +113,12 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  /// Bagian Header: Ada menu icon + sapaan
+  // bagian header: ada menu icon + sapaan user
   Widget _buildHeader() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Ikon menu di kanan atas
+        // ikon menu di pojok kanan atas
         Align(
           alignment: Alignment.centerRight,
           child: Container(
@@ -139,7 +134,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        // Sapaan user
+        // sapaan user
         const Text(
           'Good Morning\nDunjali',
           style: TextStyle(
@@ -152,11 +147,11 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  /// Search Bar di bawah header
+  // search bar di bawah header
   Widget _buildSearchBar() {
     return TextField(
       decoration: InputDecoration(
-        hintText: 'Search', // placeholder
+        hintText: 'Search',
         hintStyle: TextStyle(color: Colors.grey.shade400),
         prefixIcon: Icon(Icons.search, color: Colors.grey.shade400),
         filled: true,
@@ -170,34 +165,28 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  /// Grid Menu untuk fitur utama aplikasi
+  // menu grid untuk fitur utama
   Widget _buildGridMenu(BuildContext context) {
     return GridView.count(
-      crossAxisCount: 2, // 2 kolom
-      shrinkWrap: true, // biar grid bisa scroll bareng column
+      crossAxisCount: 2,
+      shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       crossAxisSpacing: 16,
       mainAxisSpacing: 16,
       children: [
-        // Card fitur diet plan
-        FeatureCard(
-          title: 'Diet Plan',
-          imagePath: 'images/diet.png',
-          onTap: () => Navigator.of(context).pushNamed('/diet'),
-        ),
-        // Card fitur exercises
+        // card fitur exercises
         FeatureCard(
           title: 'Exercises',
           imagePath: 'images/exercise.png',
           onTap: () => Navigator.of(context).pushNamed('/exercises'),
         ),
-        // Card fitur medical tips
+        // card fitur medical tips
         FeatureCard(
           title: 'Medical Tips',
           imagePath: 'images/medical.png',
           onTap: () => Navigator.of(context).pushNamed('/medical'),
         ),
-        // Card fitur yoga
+        // card fitur yoga
         FeatureCard(
           title: 'Yoga',
           imagePath: 'images/yoga.png',
@@ -207,7 +196,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  /// Bottom navigation bar custom (tiga tombol)
+  // bottom nav bar custom
   Widget _buildBottomNavBar() {
     return Container(
       padding: const EdgeInsets.fromLTRB(10, 15, 10, 20),
@@ -247,11 +236,7 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-// =======================================================
-// WIDGET BANTUAN (Reusable components)
-// =======================================================
-
-/// Kartu menu untuk setiap fitur
+// kartu menu untuk tiap fitur
 class FeatureCard extends StatelessWidget {
   final String title;
   final String imagePath;
@@ -267,7 +252,7 @@ class FeatureCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap, // Biar kartu bisa diklik
+      onTap: onTap, // biar kartu bisa diklik
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -290,7 +275,7 @@ class FeatureCard extends StatelessWidget {
                   imagePath,
                   fit: BoxFit.contain,
                   errorBuilder: (context, error, stackTrace) =>
-                    const Icon(Icons.image_not_supported, size: 50, color: Colors.grey),
+                      const Icon(Icons.image_not_supported, size: 50, color: Colors.grey),
                 ),
               ),
             ),
@@ -311,11 +296,11 @@ class FeatureCard extends StatelessWidget {
   }
 }
 
-// Item untuk bottom navigation bar
+// item untuk bottom navigation bar
 class BottomNavItem extends StatelessWidget {
   final IconData icon;
   final String label;
-  final bool isActive; // Biar tau icon yang lagi aktif
+  final bool isActive;
 
   const BottomNavItem({
     super.key,
@@ -326,8 +311,8 @@ class BottomNavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color activeColor = const Color(0xFFF9A825); // warna item aktif
-    final Color inactiveColor = Colors.grey.shade500; // warna item pasif
+    final Color activeColor = const Color(0xFFF9A825);
+    final Color inactiveColor = Colors.grey.shade500;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
