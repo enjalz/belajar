@@ -5,24 +5,27 @@ class ExercisesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Progres latihan dummy
-    const double exerciseProgress = 0.6; // 60%
+    // bikin nilai dummy untuk progres latihan (60%)
+    const double exerciseProgress = 0.6;
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Latihan Harian',
-            style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold)),
+        title: const Text(
+          'latihan harian',
+          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+        ),
         backgroundColor: const Color(0xFFFCD4D4),
-        centerTitle: true,
+        centerTitle: true, // biar judulnya di tengah
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // judul halaman
             const Text(
-              'Workout Hari Ini',
+              'workout hari ini',
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
@@ -30,10 +33,12 @@ class ExercisesScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30),
+            // tampilkan kartu progres latihan
             _buildProgressCard(exerciseProgress),
             const SizedBox(height: 30),
+            // bagian rekomendasi latihan
             const Text(
-              'Rekomendasi Latihan',
+              'rekomendasi latihan',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
@@ -41,6 +46,7 @@ class ExercisesScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 15),
+            // list latihan
             _buildExerciseList(),
           ],
         ),
@@ -48,7 +54,7 @@ class ExercisesScreen extends StatelessWidget {
     );
   }
 
-  /// Widget untuk menampilkan kartu progres
+  // widget untuk bikin kartu progres latihan
   Widget _buildProgressCard(double progress) {
     return Container(
       padding: const EdgeInsets.all(24),
@@ -60,7 +66,7 @@ class ExercisesScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Progres Latihanmu',
+            'progres latihanmu',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -68,13 +74,15 @@ class ExercisesScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
+          // teks keterangan berapa persen progres hari ini
           Text(
-            'Kamu sudah menyelesaikan ${(progress * 100).toInt()}% dari targetmu hari ini.',
+            'kamu sudah menyelesaikan ${(progress * 100).toInt()}% dari targetmu hari ini.',
             style: TextStyle(color: Colors.grey.shade600),
           ),
           const SizedBox(height: 15),
+          // bar progres
           LinearProgressIndicator(
-            value: progress,
+            value: progress, // nilainya dari variabel progress
             backgroundColor: Colors.grey.shade300,
             color: const Color(0xFFF9A825),
             borderRadius: BorderRadius.circular(10),
@@ -85,25 +93,26 @@ class ExercisesScreen extends StatelessWidget {
     );
   }
 
-  /// Widget untuk membuat daftar latihan
+  // widget untuk bikin daftar latihan
   Widget _buildExerciseList() {
     return ListView(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true, // biar nggak ambil tinggi layar penuh
+      physics: const NeverScrollableScrollPhysics(), // scroll ikut parent
       children: const [
+        // item latihan satu-satu
         _ExerciseItem(
-          title: 'Lari Pagi',
-          duration: '30 Menit',
+          title: 'lari pagi',
+          duration: '30 menit',
           icon: Icons.directions_run,
         ),
         _ExerciseItem(
-          title: 'Push-up',
-          duration: '3 Set x 10 Reps',
+          title: 'push-up',
+          duration: '3 set x 10 reps',
           icon: Icons.fitness_center,
         ),
         _ExerciseItem(
-          title: 'Squat',
-          duration: '3 Set x 12 Reps',
+          title: 'squat',
+          duration: '3 set x 12 reps',
           icon: Icons.line_weight,
         ),
       ],
@@ -111,11 +120,11 @@ class ExercisesScreen extends StatelessWidget {
   }
 }
 
-/// Widget yang dapat digunakan kembali untuk setiap item latihan
+// widget reusable untuk setiap item latihan
 class _ExerciseItem extends StatelessWidget {
-  final String title;
-  final String duration;
-  final IconData icon;
+  final String title; // nama latihannya
+  final String duration; // lama / jumlah set latihannya
+  final IconData icon; // ikon yang ditampilkan
 
   const _ExerciseItem({
     required this.title,
@@ -141,6 +150,7 @@ class _ExerciseItem extends StatelessWidget {
       ),
       child: Row(
         children: [
+          // icon di sebelah kiri
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
@@ -150,6 +160,7 @@ class _ExerciseItem extends StatelessWidget {
             child: Icon(icon, color: const Color(0xFFF9A825)),
           ),
           const SizedBox(width: 15),
+          // teks judul dan durasi latihan
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,6 +182,7 @@ class _ExerciseItem extends StatelessWidget {
               ],
             ),
           ),
+          // icon panah kecil di kanan
           const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
         ],
       ),
